@@ -5,15 +5,20 @@ import com.epam.jwd.core_final.criteria.Criteria;
 import com.epam.jwd.core_final.criteria.FlightMissionCriteria;
 import com.epam.jwd.core_final.domain.*;
 import com.epam.jwd.core_final.exception.InvalidStateException;
+import com.epam.jwd.core_final.factory.impl.CrewMemberFactory;
 import com.epam.jwd.core_final.factory.impl.FlightMissionFactory;
 import com.epam.jwd.core_final.service.MissionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MissionServiceImpl implements MissionService {
 
+    private static Logger logger = LoggerFactory.getLogger(MissionServiceImpl.class);
     private static MissionServiceImpl instance;
 
     public static MissionServiceImpl getInstance() {
@@ -27,6 +32,18 @@ public class MissionServiceImpl implements MissionService {
 
     }
 
+    public void saveAllMissionsToFile() {
+        String path = "src/main/resources/output/missions.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))){
+            for (FlightMission m : NassaContext.getInstance().retrieveBaseEntityList(FlightMission.class)) {
+                writer.write(m.toString());
+                writer.write("\n----------------");
+            }
+
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+        }
+    }
     public void releaseAssignedSpaceships(FlightMission mission) {
         mission.getAssignedSpaceShip().setIsReadyForNextMissions(true);
     }

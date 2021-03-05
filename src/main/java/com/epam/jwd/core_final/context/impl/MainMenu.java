@@ -29,7 +29,8 @@ public class MainMenu implements ApplicationMenu {
         System.out.println("2. Check current missions.");
         System.out.println("3. Check all spaceships.");
         System.out.println("4. Check all crew members.");
-        System.out.println("5. Exit.");
+        System.out.println("5. Print current missions in file");
+        System.out.println("6. Exit.");
         System.out.println("----------------");
     }
 
@@ -42,7 +43,8 @@ public class MainMenu implements ApplicationMenu {
             case 2: checkCurrentMissions(); break;
             case 3: checkCurrentSpaceships(); break;
             case 4: checkCurrentCrewMembers(); break;
-            case 5: exit(); break;
+            case 5: MissionServiceImpl.getInstance().saveAllMissionsToFile(); break;
+            case 6: exit(); break;
         }
     }
 
